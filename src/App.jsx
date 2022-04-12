@@ -1,15 +1,17 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from './constants/colors';
 
 import HomeScreen from './screens/Home/HomeScreen';
+import LoginScreen from './screens/Login/LoginScreen';
+
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
 
 const ScreenContainer = styled.div`
 	overflow-x: hidden;
-	margin-left: 250px;
-	width: calc(100% - 250px);
+	margin-left: 200px;
+	width: calc(100% - 200px);
 	height: 100vh;
 
 	@media (max-width: 576px) {
@@ -29,18 +31,33 @@ const Wrapper = styled.div`
 `;
 
 const App = () => {
+	const userInfo = true;
+
 	return (
-		<BrowserRouter>
-			<Sidebar />
-			<ScreenContainer>
-				<Navbar />
-				<Wrapper>
-					<Routes>
-						<Route path='/' element={<HomeScreen />} />
-					</Routes>
-				</Wrapper>
-			</ScreenContainer>
-		</BrowserRouter>
+		<>
+			{userInfo ? (
+				<BrowserRouter>
+					<Sidebar />
+					<ScreenContainer>
+						<Navbar />
+						<Wrapper>
+							<Routes>
+								<Route path='/' exact element={<HomeScreen />} />
+							</Routes>
+						</Wrapper>
+					</ScreenContainer>
+				</BrowserRouter>
+			) : (
+				<>
+					<BrowserRouter>
+						<Routes>
+							{/* <Navigate to='/login' /> */}
+							<Route path='/login' element={<LoginScreen />} />
+						</Routes>
+					</BrowserRouter>
+				</>
+			)}
+		</>
 	);
 };
 

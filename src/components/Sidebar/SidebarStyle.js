@@ -1,11 +1,9 @@
-import { NavLink } from 'react-router-dom';
-
 import styled from 'styled-components';
 import colors from '../../constants/colors';
 
 export const Container = styled.div`
 	position: fixed;
-	width: 250px;
+	width: 200px;
 	height: 100vh;
 	background-color: ${colors.white};
 	box-sizing: border-box;
@@ -13,9 +11,12 @@ export const Container = styled.div`
 	flex-direction: column;
 	font-weight: 300;
 	z-index: 1;
+	align-items: center;
+	/* text-align: center; */
 
 	.logo {
 		margin-top: -40px;
+		width: 200px;
 	}
 
 	@media (max-width: 768px) {
@@ -32,12 +33,10 @@ export const Nav = styled.ul`
 
 	li {
 		padding: 15px;
-		transition: all 0.3s ease;
 		font-size: 20px;
 		transition: all 0.3s ease;
 
 		&:hover {
-			background-color: ${colors.background};
 			cursor: pointer;
 			color: ${colors.success};
 		}
