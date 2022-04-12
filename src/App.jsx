@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from './constants/colors';
 
@@ -51,7 +51,6 @@ const App = () => {
 				<>
 					<BrowserRouter>
 						<Routes>
-							{/* <Navigate to='/login' /> */}
 							<Route path='/login' element={<LoginScreen />} />
 						</Routes>
 					</BrowserRouter>

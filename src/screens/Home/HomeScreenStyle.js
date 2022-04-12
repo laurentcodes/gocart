@@ -30,8 +30,14 @@ export const Card = styled.div`
 	gap: 40px;
 	color: #fff;
 	text-align: center;
+	transition: all 0.3s ease-in-out;
 
 	img {
 		width: 50px;
+	}
+
+	&:hover {
+		cursor: pointer;
+		background-color: ${colors.brand};
 	}
 `;

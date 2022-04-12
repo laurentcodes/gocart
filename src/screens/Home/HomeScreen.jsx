@@ -27,8 +27,26 @@ const HomeScreen = () => {
 					<Card>
 						<img src={user} alt='' />
 						<div>
-							<h3>Deliveries</h3>
+							<h3>Total Deliveries</h3>
 							<h1>500</h1>
+						</div>
+					</Card>
+				</CardContainer>
+
+				<CardContainer>
+					<Card>
+						<img src={user} alt='' />
+						<div>
+							<h3>In Progress</h3>
+							<h1>76</h1>
+						</div>
+					</Card>
+
+					<Card>
+						<img src={user} alt='' />
+						<div>
+							<h3>Completed Deliveries</h3>
+							<h1>469</h1>
 						</div>
 					</Card>
 				</CardContainer>
