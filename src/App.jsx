@@ -4,6 +4,7 @@ import colors from './constants/colors';
 
 import HomeScreen from './screens/Home/HomeScreen';
 import LoginScreen from './screens/Login/LoginScreen';
+import RiderScreen from './screens/Riders/RiderScreen';
 
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
@@ -43,6 +44,7 @@ const App = () => {
 						<Wrapper>
 							<Routes>
 								<Route path='/' exact element={<HomeScreen />} />
+								<Route path='/riders' element={<RiderScreen />} />
 							</Routes>
 						</Wrapper>
 					</ScreenContainer>
