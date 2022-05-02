@@ -3,12 +3,7 @@ import colors from '../../constants/colors';
 
 import { NavLink } from 'react-router-dom';
 
-import {
-	Container,
-	Nav,
-	navLinkStyle,
-	navLinkActiveStyle,
-} from './SidebarStyle.js';
+import { Container, Nav } from './SidebarStyle.js';
 
 import logo from '../../assets/images/logo.png';
 
@@ -19,7 +14,6 @@ const Sidebar = () => {
 
 			<Nav>
 				<NavLink
-					exact
 					to='/'
 					style={({ isActive }) => ({
 						color: isActive ? `${colors.success}` : `${colors.brand}`,

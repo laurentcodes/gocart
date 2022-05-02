@@ -8,11 +8,12 @@ const authTokenFromStorage = localStorage.getItem('gocart-token')
 const initialState = {
 	userLogin: { authToken: authTokenFromStorage },
 	loading: false,
+	error: null,
 };
 
 export const loginUser = createAsyncThunk(
 	'auth/login',
-	async (email, password) => {
+	async (user, { rejectWithValue }) => {
 		try {
 			const config = {
 				headers: {
@@ -22,14 +23,14 @@ export const loginUser = createAsyncThunk(
 
 			const { data } = await axios.post(
 				'https://reqres.in/api/login',
-				{ email, password },
+				user,
 				config
 			);
 
-			console.log(data);
 			return data.token;
-		} catch (error) {
-			console.log('first error', error);
+		} catch (err) {
+			console.log(err);
+			return rejectWithValue(err.response.data.error);
 		}
 	}
 );
@@ -38,9 +39,9 @@ export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		logout: async (state) => {
+		logout: (state) => {
 			localStorage.removeItem('gocart-token');
-      window.location.reload();
+			state.userLogin.authToken = null;
 		},
 	},
 	extraReducers: {
@@ -50,6 +51,10 @@ export const authSlice = createSlice({
 		[loginUser.fulfilled]: (state, action) => {
 			state.userLogin.authToken = action.payload;
 			localStorage.setItem('gocart-token', JSON.stringify(action.payload));
+			state.loading = false;
+		},
+		[loginUser.rejected]: (state, action) => {
+			state.error = action.payload;
 			state.loading = false;
 		},
 	},
