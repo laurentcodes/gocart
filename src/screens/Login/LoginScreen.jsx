@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginUser } from '../../app/features/authSlice';
 
 import { Container, Form } from './LoginScreenStyle';
