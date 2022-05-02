@@ -11,7 +11,7 @@ export const Container = styled.div`
 	overflow: hidden;
 
 	img {
-    margin-top: -50px;
+		margin-top: -50px;
 		width: 200px;
 	}
 `;
@@ -40,7 +40,7 @@ export const Form = styled.form`
 	}
 
 	button {
-		width: 45%;
+		width: 100%;
 		height: 45px;
 		border-radius: 4px;
 		border: 0;

@@ -1,10 +1,14 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser } from '../../app/features/authSlice';
 
 import { Container, Form } from './LoginScreenStyle';
 
 import logo from '../../assets/images/logo.png';
 
 const LoginScreen = () => {
+	const dispatch = useDispatch();
+
 	return (
 		<div>
 			<Container>
@@ -18,7 +22,15 @@ const LoginScreen = () => {
 					<label htmlFor='password'>Password</label>
 					<input type='password' placeholder='Password' />
 
-					<button>SIGN IN</button>
+					<button
+						type='button'
+						aria-label='Increment value'
+						onClick={() =>
+							dispatch(loginUser('eve.holt@reqres.in', 'cityslicka'))
+						}
+					>
+						SIGN IN
+					</button>
 				</Form>
 			</Container>
 		</div>

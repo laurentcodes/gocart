@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import colors from './constants/colors';
 
@@ -7,6 +8,7 @@ import LoginScreen from './screens/Login/LoginScreen';
 
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
+import { useEffect } from 'react';
 
 const ScreenContainer = styled.div`
 	overflow-x: hidden;
@@ -31,18 +33,23 @@ const Wrapper = styled.div`
 `;
 
 const App = () => {
-	const userInfo = true;
+	const userToken = useSelector((state) => state.auth.userLogin.authToken);
+
+	useEffect(() => {
+		if (!userToken) {
+		}
+	}, [userToken]);
 
 	return (
 		<>
-			{userInfo ? (
+			{userToken ? (
 				<BrowserRouter>
 					<Sidebar />
 					<ScreenContainer>
 						<Navbar />
 						<Wrapper>
 							<Routes>
-								<Route path='/' exact element={<HomeScreen />} />
+								<Route exact path='/' element={<HomeScreen />} />
 							</Routes>
 						</Wrapper>
 					</ScreenContainer>
@@ -51,7 +58,7 @@ const App = () => {
 				<>
 					<BrowserRouter>
 						<Routes>
-							<Route path='/login' element={<LoginScreen />} />
+							<Route path='/' element={<LoginScreen />} />
 						</Routes>
 					</BrowserRouter>
 				</>
