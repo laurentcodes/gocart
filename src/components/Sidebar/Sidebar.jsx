@@ -44,13 +44,13 @@ const Sidebar = () => {
 				</NavLink>
 
 				<NavLink
-					to='/deliveries'
+					to='/orders'
 					style={({ isActive }) => ({
 						color: isActive ? `${colors.success}` : `${colors.brand}`,
 						textDecoration: 'none',
 					})}
 				>
-					<li>Deliveries</li>
+					<li>Orders</li>
 				</NavLink>
 			</Nav>
 		</Container>
