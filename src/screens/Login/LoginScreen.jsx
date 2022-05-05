@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../../app/features/authSlice';
@@ -10,11 +10,16 @@ import { Container, Form } from './LoginScreenStyle';
 import logo from '../../assets/images/logo.png';
 
 const LoginScreen = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+
 	const dispatch = useDispatch();
 	const location = useLocation();
 
-	const loading = useSelector((state) => state.auth.loading);
-	const authToken = useSelector((state) => state.auth.userLogin.authToken);
+	const {
+		loading,
+		userLogin: { authToken },
+	} = useSelector((state) => state.auth);
 
 	const redirectPath = location.state?.path || '/';
 
@@ -33,10 +38,20 @@ const LoginScreen = () => {
 					<h2>Sign In</h2>
 					<Form>
 						<label htmlFor='username'>Username</label>
-						<input type='text' placeholder='Username' />
+						<input
+							type='text'
+							placeholder='Username'
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
 
 						<label htmlFor='password'>Password</label>
-						<input type='password' placeholder='Password' />
+						<input
+							type='password'
+							placeholder='Password'
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
 
 						<button
 							type='button'
@@ -44,8 +59,8 @@ const LoginScreen = () => {
 							onClick={() =>
 								dispatch(
 									loginUser({
-										email: 'eve.holt@reqres.in',
-										password: 'cityslicka',
+										email,
+										password,
 									})
 								)
 							}

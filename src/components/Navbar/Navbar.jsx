@@ -1,18 +1,24 @@
 import React from 'react';
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import { logout } from '../../app/features/authSlice';
 
 import { Nav } from './NavbarStyle';
+
+import exit from '../../assets/icons/exit.svg';
 
 const Navbar = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
+	const { userName } = useSelector((state) => state.auth.userLogin);
+
 	return (
 		<Nav>
-			<h3>GoCart</h3>
+			<h3>
+				GoCart Admin, <span>{userName}</span>
+			</h3>
 
 			<button
 				onClick={() => {
@@ -20,7 +26,7 @@ const Navbar = () => {
 					navigate('/login');
 				}}
 			>
-				Logout
+				<img src={exit} alt='' />
 			</button>
 		</Nav>
 	);

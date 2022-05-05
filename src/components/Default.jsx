@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 	margin-top: 60px;
 	height: calc(100% - 60px);
 	overflow-y: hidden;
-	background-color: ${colors.background};
+	background-color: ${colors.white};
 `;
 
 const Default = () => {
