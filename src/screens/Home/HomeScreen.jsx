@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { getAllOrders } from '../../app/features/orderSlice';
 import { getAllRiders } from '../../app/features/riderSlice';
+import { getAllUsers } from '../../app/features/userSlice';
 
 import { Container, Card, CardContainer } from './HomeScreenStyle.js';
 
@@ -11,6 +13,7 @@ import Loader from '../../components/Loader';
 import user from '../../assets/icons/group.svg';
 
 const HomeScreen = () => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const {
@@ -19,29 +22,42 @@ const HomeScreen = () => {
 		pendingOrders,
 		loading: { orderLoading },
 	} = useSelector((state) => state.order);
+
+	const {
+		userCount,
+		loading: { userLoading },
+	} = useSelector((state) => state.user);
+
 	const {
 		riderCount,
 		loading: { riderLoading },
 	} = useSelector((state) => state.rider);
+
 	const { authToken } = useSelector((state) => state.auth.userLogin);
 
 	useEffect(() => {
 		dispatch(getAllOrders(authToken));
+		dispatch(getAllRiders(authToken));
+		dispatch(getAllUsers(authToken));
 	}, [dispatch, authToken]);
 
 	return (
 		<div>
 			<Container>
-				{orderLoading || riderLoading ? (
+				{orderLoading || riderLoading || userLoading ? (
 					<Loader />
 				) : (
 					<>
 						<CardContainer>
-							<Card>
+							<Card
+								onClick={() => {
+									navigate('users');
+								}}
+							>
 								<img src={user} alt='' />
 								<div>
 									<h3>Users</h3>
-									<h1>2000</h1>
+									<h1>{userCount}</h1>
 								</div>
 							</Card>
 							<Card>
@@ -52,7 +68,11 @@ const HomeScreen = () => {
 									<h1>{riderCount}</h1>
 								</div>
 							</Card>
-							<Card>
+							<Card
+								onClick={() => {
+									navigate('orders');
+								}}
+							>
 								<img src={user} alt='' />
 								<div>
 									<h3>Total Orders</h3>
@@ -62,7 +82,11 @@ const HomeScreen = () => {
 						</CardContainer>
 
 						<CardContainer>
-							<Card>
+							<Card
+								onClick={() => {
+									navigate('orders');
+								}}
+							>
 								<img src={user} alt='' />
 								<div>
 									<h3>In Progress</h3>
@@ -70,7 +94,11 @@ const HomeScreen = () => {
 								</div>
 							</Card>
 
-							<Card>
+							<Card
+								onClick={() => {
+									navigate('orders');
+								}}
+							>
 								<img src={user} alt='' />
 								<div>
 									<h3>Completed Orders</h3>
