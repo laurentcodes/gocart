@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 
 // import BackArrow from '../../assets/icons/arrow/chevron_left.svg';
 
 import {
-	BackButton,
 	FeedbackTable,
 	StyledAllFeedbacks,
 	EmptyFeedback,
@@ -16,96 +15,40 @@ import {
 
 import ListItem from './ListItem';
 
+import { getAllRiders } from '../../app/features/riderSlice';
+import Loader from '../../components/Loader';
+
 const RiderScreen = () => {
 	// States for setting pagination
 	const [currentPage, setCurrentPage] = useState(0);
-	const [feedbacksPerPage] = useState(10);
+	const [ridersPerPage] = useState(10);
 
-	const feedbacks = [
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-		{
-			first_name: 'Segun',
-			last_name: 'Olagunju',
-			email: 'o.sherkes@gmail.com',
-			deliveries: 10,
-		},
-	];
+	const dispatch = useDispatch();
 
-	// Sort feedbacks
-	const sortedFeeds = feedbacks.sort(
-		(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+	const { riders, loading } = useSelector((state) => state.rider);
+
+	const { authToken } = useSelector((state) => state.auth.userLogin);
+
+	// Sort riders
+	let ridersFromState = [...riders];
+
+	const sortedRiders = ridersFromState.sort(
+		(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 	);
 
-	const pageVisited = currentPage * feedbacksPerPage;
-	const indexOfFirstFeedback = pageVisited - feedbacksPerPage;
+	const pageVisited = currentPage * ridersPerPage;
+	const indexOfFirstRider = pageVisited - ridersPerPage;
 
-	const displayedFeedbacks = sortedFeeds.slice(
+	const displayedRiders = sortedRiders.slice(
 		pageVisited,
-		pageVisited + feedbacksPerPage
+		pageVisited + ridersPerPage
 	);
 
-	const noOfPages = Math.ceil(feedbacks.length / feedbacksPerPage);
+	const noOfPages = Math.ceil(riders.length / ridersPerPage);
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		dispatch(getAllRiders(authToken));
+	}, [dispatch, authToken]);
 
 	// Change page
 	const changePage = ({ selected }) => {
@@ -115,7 +58,9 @@ const RiderScreen = () => {
 	return (
 		<StyledAllFeedbacks>
 			<>
-				{feedbacks.length < 1 ? (
+				{loading ? (
+					<Loader />
+				) : riders.length < 1 ? (
 					<EmptyFeedback>No Riders yet!</EmptyFeedback>
 				) : (
 					<>
@@ -123,32 +68,32 @@ const RiderScreen = () => {
 							<FeedbackTable>
 								<thead>
 									<tr>
-										<th>First Name</th>
-										<th>Last Name</th>
+										<th>Rider ID</th>
+										<th>Username</th>
 										<th>Email</th>
-										<th>Deliveries</th>
+										<th>Joined</th>
 									</tr>
 								</thead>
 
 								<tbody>
-									{displayedFeedbacks.map((feedback) => (
-										<ListItem key={feedback._id} feedback={feedback} />
+									{displayedRiders.map((rider) => (
+										<ListItem key={rider._id} item={rider} />
 									))}
 								</tbody>
 							</FeedbackTable>
 						</TableContainer>
 
-						{feedbacks.length > 10 && (
+						{riders.length > 10 && (
 							<Footer>
-								{displayedFeedbacks.length < feedbacksPerPage ? (
+								{displayedRiders.length < ridersPerPage ? (
 									<p>
-										Showing {indexOfFirstFeedback + 11} to {feedbacks.length} of{' '}
-										{feedbacks.length} items
+										Showing {indexOfFirstRider + 11} to {riders.length} of{' '}
+										{riders.length} items
 									</p>
 								) : (
 									<p>
-										Showing {indexOfFirstFeedback + 11} to {pageVisited + 10} of{' '}
-										{feedbacks.length} items
+										Showing {indexOfFirstRider + 11} to {pageVisited + 10} of{' '}
+										{riders.length} items
 									</p>
 								)}
 

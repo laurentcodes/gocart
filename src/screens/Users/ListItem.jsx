@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlexWrap } from './UserScreenStyle';
+import { FlexWrap, StyledLink } from './UserScreenStyle';
 
 import { formatISO } from '../../util/date';
 
@@ -8,22 +8,15 @@ const ListItem = ({ item }) => {
 		<tr>
 			<td style={{ width: '30%' }}>
 				<FlexWrap>
-					<p>{item.user_id}</p>
+					<StyledLink to={`/users/${item.user_id}`}>
+						<p>{item.user_id}</p>
+					</StyledLink>
 				</FlexWrap>
 			</td>
-			<td style={{ width: '30%' }}>
+			<td style={{ width: '35%' }}>
 				<p>{item.username}</p>
 			</td>
-			<td style={{ width: '30%' }}>{formatISO(item.createdAt)}</td>
-			<td style={{ width: '10%' }}>
-				<button
-					onClick={() => {
-						console.log(item);
-					}}
-				>
-					Action
-				</button>
-			</td>
+			<td style={{ width: '35%' }}>{formatISO(item.createdAt)}</td>
 		</tr>
 	);
 };

@@ -70,7 +70,6 @@ const UserScreen = () => {
 										<th>User ID</th>
 										<th>Username</th>
 										<th>Joined</th>
-										<th>Action</th>
 									</tr>
 								</thead>
 

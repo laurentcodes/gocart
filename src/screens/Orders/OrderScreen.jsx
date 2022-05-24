@@ -36,7 +36,7 @@ const OrderScreen = () => {
 	);
 
 	const pageVisited = currentPage * ordersPerPage;
-	const indexOfFirstUser = pageVisited - ordersPerPage;
+	const indexOfFirstOrder = pageVisited - ordersPerPage;
 
 	const displayedUsers = sortedOrders.slice(
 		pageVisited,
@@ -86,12 +86,12 @@ const OrderScreen = () => {
 							<Footer>
 								{displayedUsers.length < ordersPerPage ? (
 									<p>
-										Showing {indexOfFirstUser + 11} to {orders.length} of
+										Showing {indexOfFirstOrder + 11} to {orders.length} of
 										{orders.length} items
 									</p>
 								) : (
 									<p>
-										Showing {indexOfFirstUser + 11} to {pageVisited + 10} of
+										Showing {indexOfFirstOrder + 11} to {pageVisited + 10} of
 										{orders.length} items
 									</p>
 								)}

@@ -1,19 +1,21 @@
 import React from 'react';
 import { FlexWrap } from './RiderScreenStyle';
 
-const ListItem = ({ feedback }) => {
+import { formatISO } from '../../util/date';
+
+const ListItem = ({ item }) => {
 	return (
 		<tr>
-			<td style={{ width: '25%' }}>
+			<td style={{ width: '20%' }}>
 				<FlexWrap>
-					<p>{feedback.first_name}</p>
+					<p>{item.rider_id}</p>
 				</FlexWrap>
 			</td>
-			<td style={{ width: '25%' }}>
-				<p>{feedback.last_name}</p>
+			<td style={{ width: '30%' }}>
+				<p>{item.username}</p>
 			</td>
-			<td style={{ width: '30%' }}>{feedback.email}</td>
-			<td style={{ width: '20%' }}>{feedback.deliveries}</td>
+			<td style={{ width: '30%' }}>{item.email}</td>
+			<td style={{ width: '20%' }}>{formatISO(item.createdAt)}</td>
 		</tr>
 	);
 };

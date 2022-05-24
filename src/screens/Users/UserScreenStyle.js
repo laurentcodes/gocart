@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from '../../constants/colors';
 
@@ -146,5 +147,17 @@ export const StyledPagination = styled.nav`
 
 	.paginationDisabled {
 		color: #b4b4b4;
+	}
+`;
+
+export const StyledLink = styled(Link)`
+	text-decoration: none;
+	color: ${colors.body};
+	font-size: 14px;
+	font-weight: 600;
+	transition: all 0.2s ease-in-out;
+
+	&:hover {
+		color: ${colors.brand};
 	}
 `;

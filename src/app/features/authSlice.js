@@ -7,8 +7,8 @@ const authTokenFromStorage = localStorage.getItem('gocart-token')
 
 const initialState = {
 	userLogin: {
-		authToken: authTokenFromStorage.jwt,
-		userName: authTokenFromStorage.username,
+		authToken: authTokenFromStorage.jwt || null,
+		userName: authTokenFromStorage.username || null,
 	},
 	loading: false,
 	error: null,
