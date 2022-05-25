@@ -1,28 +1,30 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+const url = process.env.REACT_APP_API_URL;
+
 const initialState = {
 	users: [],
 	user: {},
-	userCount: 0,
+	stats: {},
 	loading: false,
 	error: null,
 	userBlocked: false,
 };
 
-export const getAllUsers = createAsyncThunk(
-	'user/getAll',
+// GET USERS STATISTICS
+export const getUsersStat = createAsyncThunk(
+	'user/stats',
 	async (token, { rejectWithValue }) => {
 		try {
 			const config = {
 				headers: {
-					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
 				},
 			};
 
 			const { data } = await axios.get(
-				'https://gocartsapp.herokuapp.com/admin/users',
+				`${url}/admin/users/stats/overview`,
 				config
 			);
 
@@ -33,6 +35,30 @@ export const getAllUsers = createAsyncThunk(
 	}
 );
 
+// GET ALL USERS
+export const getAllUsers = createAsyncThunk(
+	'user/getAll',
+	async (token, { rejectWithValue }) => {
+		try {
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+
+			const { data } = await axios.get(
+				`${url}/admin/users`,
+				config
+			);
+
+			return data.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data.message);
+		}
+	}
+);
+
+// GET SINGLE USER BY ID
 export const getUserById = createAsyncThunk(
 	'user/getById',
 	async (data, { rejectWithValue }) => {
@@ -41,12 +67,11 @@ export const getUserById = createAsyncThunk(
 		try {
 			const config = {
 				headers: {
-					'Content-Type': 'application/json',
 					Authorization: `Bearer ${authToken}`,
 				},
 			};
 			const { data } = await axios.get(
-				`https://gocartsapp.herokuapp.com/admin/users/${id}?field=user_id`,
+				`${url}/admin/users/${id}?field=user_id`,
 				config
 			);
 			return data.data;
@@ -56,6 +81,7 @@ export const getUserById = createAsyncThunk(
 	}
 );
 
+// BLOCK USER
 export const blockUser = createAsyncThunk(
 	'user/block',
 	async (data, { rejectWithValue }) => {
@@ -69,7 +95,7 @@ export const blockUser = createAsyncThunk(
 				},
 			};
 			const { data } = await axios.put(
-				`https://gocartsapp.herokuapp.com/admin/users/${id}/block`,
+				`${url}/admin/users/${id}/block`,
 				{},
 				config
 			);
@@ -81,6 +107,7 @@ export const blockUser = createAsyncThunk(
 	}
 );
 
+// UNBLOCK USER
 export const unblockUser = createAsyncThunk(
 	'user/unblock',
 	async (data, { rejectWithValue }) => {
@@ -94,7 +121,7 @@ export const unblockUser = createAsyncThunk(
 				},
 			};
 			const { data } = await axios.put(
-				`https://gocartsapp.herokuapp.com/admin/users/${id}/unblock`,
+				`${url}/admin/users/${id}/unblock`,
 				{},
 				config
 			);
@@ -111,22 +138,34 @@ export const userSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: {
-		// Get All Users
-		[getAllUsers.pending]: (state, action) => {
+		// Get Stats
+		[getUsersStat.pending]: (state, action) => {
 			state.loading = true;
 		},
-		[getAllUsers.fulfilled]: (state, action) => {
-			state.users = action.payload;
-			state.userCount = action.payload.length;
+		[getUsersStat.fulfilled]: (state, action) => {
+			state.stats = action.payload;
 			state.loading = false;
 		},
-		[getAllUsers.rejected]: (state, action) => {
+		[getUsersStat.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
 
 			if (state.error.status === 401 || 406) {
 				localStorage.removeItem('gocart-token');
 			}
+		},
+
+		// Get All Users
+		[getAllUsers.pending]: (state, action) => {
+			state.loading = true;
+		},
+		[getAllUsers.fulfilled]: (state, action) => {
+			state.users = action.payload;
+			state.loading = false;
+		},
+		[getAllUsers.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
 		},
 
 		// Get User By ID
@@ -157,10 +196,6 @@ export const userSlice = createSlice({
 		[blockUser.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
-
-			if (state.error.status === 401 || 406) {
-				localStorage.removeItem('gocart-token');
-			}
 		},
 
 		// Unblock User
@@ -174,10 +209,6 @@ export const userSlice = createSlice({
 		[unblockUser.rejected]: (state, action) => {
 			state.error = action.payload;
 			state.loading = false;
-
-			if (state.error.status === 401 || 406) {
-				localStorage.removeItem('gocart-token');
-			}
 		},
 	},
 });

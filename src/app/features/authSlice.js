@@ -5,15 +5,18 @@ const authTokenFromStorage = localStorage.getItem('gocart-token')
 	? JSON.parse(localStorage.getItem('gocart-token'))
 	: null;
 
+const url = process.env.REACT_APP_API_URL;
+
 const initialState = {
 	userLogin: {
-		authToken: authTokenFromStorage.jwt || null,
-		userName: authTokenFromStorage.username || null,
+		authToken: (authTokenFromStorage && authTokenFromStorage.jwt) || null,
+		userName: (authTokenFromStorage && authTokenFromStorage.username) || null,
 	},
 	loading: false,
 	error: null,
 };
 
+// LOGIN USER
 export const loginUser = createAsyncThunk(
 	'auth/login',
 	async (user, { rejectWithValue }) => {
@@ -25,7 +28,7 @@ export const loginUser = createAsyncThunk(
 			};
 
 			const { data } = await axios.post(
-				'https://gocartsapp.herokuapp.com/admin/auth/login',
+				`${url}/admin/auth/login`,
 				user,
 				config
 			);

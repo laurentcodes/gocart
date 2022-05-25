@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 
 import {
-	FeedbackTable,
-	StyledAllFeedbacks,
-	EmptyFeedback,
+	StatContainer,
+	UserTable,
+	StyledAllUsers,
+	EmptyUser,
 	Footer,
 	TableContainer,
 	StyledPagination,
@@ -15,7 +16,7 @@ import Loader from '../../components/Loader';
 
 import ListItem from './ListItem';
 
-import { getAllUsers } from '../../app/features/userSlice';
+import { getUsersStat, getAllUsers } from '../../app/features/userSlice';
 
 const UserScreen = () => {
 	// States for setting pagination
@@ -24,7 +25,17 @@ const UserScreen = () => {
 
 	const dispatch = useDispatch();
 
-	const { users, loading } = useSelector((state) => state.user);
+	const {
+		users,
+		loading,
+		stats: {
+			total_count,
+			verified_count,
+			blocked_count,
+			registered_today,
+			registered_month,
+		},
+	} = useSelector((state) => state.user);
 
 	const { authToken } = useSelector((state) => state.auth.userLogin);
 
@@ -46,6 +57,7 @@ const UserScreen = () => {
 	const noOfPages = Math.ceil(users.length / usersPerPage);
 
 	useEffect(() => {
+		dispatch(getUsersStat(authToken));
 		dispatch(getAllUsers(authToken));
 	}, [dispatch, authToken]);
 
@@ -55,16 +67,23 @@ const UserScreen = () => {
 	};
 
 	return (
-		<StyledAllFeedbacks>
+		<StyledAllUsers>
 			<>
 				{loading ? (
 					<Loader />
 				) : users.length < 1 ? (
-					<EmptyFeedback>No Users yet!</EmptyFeedback>
+					<EmptyUser>No Users yet!</EmptyUser>
 				) : (
 					<>
+						<StatContainer>
+							<h3>Total Users: {total_count}</h3>
+							<h3>Verified: {verified_count}</h3>
+							<h3>Blocked: {blocked_count}</h3>
+							<h3>Registered Today: {registered_today}</h3>
+							<h3>Registered This Month: {registered_month}</h3>
+						</StatContainer>
 						<TableContainer>
-							<FeedbackTable>
+							<UserTable>
 								<thead>
 									<tr>
 										<th>User ID</th>
@@ -78,7 +97,7 @@ const UserScreen = () => {
 										<ListItem key={user._id} item={user} />
 									))}
 								</tbody>
-							</FeedbackTable>
+							</UserTable>
 						</TableContainer>
 
 						{users.length > 10 && (
@@ -116,7 +135,7 @@ const UserScreen = () => {
 					</>
 				)}
 			</>
-		</StyledAllFeedbacks>
+		</StyledAllUsers>
 	);
 };
 

@@ -5,9 +5,10 @@ import ReactPaginate from 'react-paginate';
 // import BackArrow from '../../assets/icons/arrow/chevron_left.svg';
 
 import {
-	FeedbackTable,
-	StyledAllFeedbacks,
-	EmptyFeedback,
+	StatContainer,
+	RiderTable,
+	StyledAllRiders,
+	EmptyRiders,
 	Footer,
 	TableContainer,
 	StyledPagination,
@@ -15,7 +16,7 @@ import {
 
 import ListItem from './ListItem';
 
-import { getAllRiders } from '../../app/features/riderSlice';
+import { getAllRiders, getRiderStat } from '../../app/features/riderSlice';
 import Loader from '../../components/Loader';
 
 const RiderScreen = () => {
@@ -25,7 +26,17 @@ const RiderScreen = () => {
 
 	const dispatch = useDispatch();
 
-	const { riders, loading } = useSelector((state) => state.rider);
+	const {
+		riders,
+		loading,
+		stats: {
+			total_count,
+			verified_count,
+			blocked_count,
+			registered_today,
+			registered_month,
+		},
+	} = useSelector((state) => state.rider);
 
 	const { authToken } = useSelector((state) => state.auth.userLogin);
 
@@ -47,6 +58,7 @@ const RiderScreen = () => {
 	const noOfPages = Math.ceil(riders.length / ridersPerPage);
 
 	useEffect(() => {
+		dispatch(getRiderStat(authToken));
 		dispatch(getAllRiders(authToken));
 	}, [dispatch, authToken]);
 
@@ -56,16 +68,23 @@ const RiderScreen = () => {
 	};
 
 	return (
-		<StyledAllFeedbacks>
+		<StyledAllRiders>
 			<>
 				{loading ? (
 					<Loader />
 				) : riders.length < 1 ? (
-					<EmptyFeedback>No Riders yet!</EmptyFeedback>
+					<EmptyRiders>No Riders yet!</EmptyRiders>
 				) : (
 					<>
+						<StatContainer>
+							<h3>Total Riders: {total_count}</h3>
+							<h3>Verified: {verified_count}</h3>
+							<h3>Blocked: {blocked_count}</h3>
+							<h3>Registered Today: {registered_today}</h3>
+							<h3>Registered This Month: {registered_month}</h3>
+						</StatContainer>
 						<TableContainer>
-							<FeedbackTable>
+							<RiderTable>
 								<thead>
 									<tr>
 										<th>Rider ID</th>
@@ -80,9 +99,8 @@ const RiderScreen = () => {
 										<ListItem key={rider._id} item={rider} />
 									))}
 								</tbody>
-							</FeedbackTable>
+							</RiderTable>
 						</TableContainer>
-
 						{riders.length > 10 && (
 							<Footer>
 								{displayedRiders.length < ridersPerPage ? (
@@ -118,7 +136,7 @@ const RiderScreen = () => {
 					</>
 				)}
 			</>
-		</StyledAllFeedbacks>
+		</StyledAllRiders>
 	);
 };
 

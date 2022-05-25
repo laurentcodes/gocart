@@ -1,17 +1,27 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from '../../constants/colors';
 
-export const StyledAllFeedbacks = styled.div`
+export const StyledAllRiders = styled.div`
 	font-size: 14px;
 	color: ${colors.body};
 	padding: 30px;
+`;
+
+export const StatContainer = styled.div`
+	width: 100%;
+	padding: 10px;
+	display: flex;
+	gap: 10px;
+	justify-content: space-between;
+	margin-bottom: 10px;
 `;
 
 export const TableContainer = styled.div`
 	overflow-x: scroll;
 `;
 
-export const FeedbackTable = styled.table`
+export const RiderTable = styled.table`
 	border-collapse: collapse;
 	width: 100%;
 	resize: both;
@@ -45,7 +55,7 @@ export const FlexWrap = styled.div`
 	}
 `;
 
-export const EmptyFeedback = styled.div`
+export const EmptyRiders = styled.div`
 	margin-top: 10%;
 	text-align: center;
 
@@ -66,10 +76,6 @@ export const Footer = styled.div`
 	@media (max-width: 576px) {
 		flex-direction: column;
 	}
-`;
-
-export const Stars = styled.div`
-	display: flex;
 `;
 
 export const StyledPagination = styled.nav`
@@ -146,5 +152,17 @@ export const StyledPagination = styled.nav`
 
 	.paginationDisabled {
 		color: #b4b4b4;
+	}
+`;
+
+export const StyledLink = styled(Link)`
+	text-decoration: none;
+	color: ${colors.body};
+	font-size: 14px;
+	font-weight: 600;
+	transition: all 0.2s ease-in-out;
+
+	&:hover {
+		color: ${colors.brand};
 	}
 `;

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { getAllOrders } from '../../app/features/orderSlice';
-import { getAllRiders } from '../../app/features/riderSlice';
-import { getAllUsers } from '../../app/features/userSlice';
+import { getRiderStat } from '../../app/features/riderSlice';
+import { getUsersStat } from '../../app/features/userSlice';
 
 import { Container, Card, CardContainer } from './HomeScreenStyle.js';
 
@@ -20,25 +20,25 @@ const HomeScreen = () => {
 		orderCount,
 		completedOrders,
 		pendingOrders,
-		loading: { orderLoading },
+		loading: orderLoading,
 	} = useSelector((state) => state.order);
 
 	const {
-		userCount,
-		loading: { userLoading },
+		stats: { total_count: totalUsers },
+		loading: userLoading,
 	} = useSelector((state) => state.user);
 
 	const {
-		riderCount,
-		loading: { riderLoading },
+		stats: { total_count: totalRiders },
+		loading: riderLoading,
 	} = useSelector((state) => state.rider);
 
 	const { authToken } = useSelector((state) => state.auth.userLogin);
 
 	useEffect(() => {
 		dispatch(getAllOrders(authToken));
-		dispatch(getAllRiders(authToken));
-		dispatch(getAllUsers(authToken));
+		dispatch(getRiderStat(authToken));
+		dispatch(getUsersStat(authToken));
 	}, [dispatch, authToken]);
 
 	return (
@@ -57,15 +57,19 @@ const HomeScreen = () => {
 								<img src={user} alt='' />
 								<div>
 									<h3>Users</h3>
-									<h1>{userCount}</h1>
+									<h1>{totalUsers}</h1>
 								</div>
 							</Card>
-							<Card>
+							<Card
+								onClick={() => {
+									navigate('riders');
+								}}
+							>
 								<img src={user} alt='' />
 
 								<div>
 									<h3>Riders</h3>
-									<h1>{riderCount}</h1>
+									<h1>{totalRiders}</h1>
 								</div>
 							</Card>
 							<Card

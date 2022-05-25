@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 
 import {
-	FeedbackTable,
-	StyledAllFeedbacks,
-	EmptyFeedback,
+	OrderTable,
+	StyledAllOrders,
+	EmptyOrders,
 	Footer,
 	TableContainer,
 	StyledPagination,
@@ -55,20 +55,20 @@ const OrderScreen = () => {
 	};
 
 	return (
-		<StyledAllFeedbacks>
+		<StyledAllOrders>
 			<>
 				{loading ? (
 					<Loader />
 				) : orders.length < 1 ? (
-					<EmptyFeedback>No Orders yet!</EmptyFeedback>
+					<EmptyOrders>No Orders yet!</EmptyOrders>
 				) : (
 					<>
 						<TableContainer>
-							<FeedbackTable>
+							<OrderTable>
 								<thead>
 									<tr>
-										<th>User ID</th>
 										<th>Order ID</th>
+										<th>User ID</th>
 										<th>Status</th>
 										<th>Date</th>
 									</tr>
@@ -79,7 +79,7 @@ const OrderScreen = () => {
 										<ListItem key={order._id} item={order} />
 									))}
 								</tbody>
-							</FeedbackTable>
+							</OrderTable>
 						</TableContainer>
 
 						{orders.length > 10 && (
@@ -117,7 +117,7 @@ const OrderScreen = () => {
 					</>
 				)}
 			</>
-		</StyledAllFeedbacks>
+		</StyledAllOrders>
 	);
 };
 

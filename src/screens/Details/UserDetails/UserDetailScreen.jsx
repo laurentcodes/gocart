@@ -6,15 +6,20 @@ import {
 	getUserById,
 	blockUser,
 	unblockUser,
-} from '../../app/features/userSlice';
+} from '../../../app/features/userSlice';
 
-import { formatISO } from '../../util/date';
+import { formatISO } from '../../../util/date';
 
-import Loader from '../../components/Loader';
+import Loader from '../../../components/Loader';
 
-import { StyledContainer, Bio, BackButton } from './UserDetailScreenStyle';
+import {
+	StyledContainer,
+	Bio,
+	Button,
+	BackButton,
+} from './UserDetailScreenStyle';
 
-const UserDetailScreen = () => {
+const UserDetailsScreen = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -38,21 +43,21 @@ const UserDetailScreen = () => {
 
 					<StyledContainer>
 						<h3>
-							User ID: <p>{user.user_id}</p>{' '}
+							User ID: <p>{user.user_id}</p>
 						</h3>
 						<h3>
-							Username: <p>{user.username}</p>{' '}
+							Username: <p>{user.username}</p>
 						</h3>
 
 						<Bio>
 							<h3>
-								First Name: <p>{user.firstname}</p>{' '}
+								First Name: <p>{user.firstname}</p>
 							</h3>
 							<h3>
-								Last Name: <p>{user.lastname}</p>{' '}
+								Last Name: <p>{user.lastname}</p>
 							</h3>
 							<h3>
-								Email: <p>{user.email}</p>{' '}
+								Email: <p>{user.email}</p>
 							</h3>
 						</Bio>
 
@@ -61,18 +66,19 @@ const UserDetailScreen = () => {
 								marginTop: '20px',
 							}}
 						>
-							Joined: <p>{formatISO(user.createdAt)}</p>{' '}
+							Joined: <p>{formatISO(user.createdAt)}</p>
 						</h3>
 
-						<button
+						<Button
 							onClick={() => {
 								user.blocked
 									? dispatch(unblockUser({ id, authToken }))
 									: dispatch(blockUser({ id, authToken }));
 							}}
+							blocked={user.blocked}
 						>
 							{user.blocked ? 'Unblock' : 'Block'}
-						</button>
+						</Button>
 					</StyledContainer>
 				</>
 			)}
@@ -80,4 +86,4 @@ const UserDetailScreen = () => {
 	);
 };
 
-export default UserDetailScreen;
+export default UserDetailsScreen;

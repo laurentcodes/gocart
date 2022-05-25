@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlexWrap } from './RiderScreenStyle';
+import { FlexWrap, StyledLink } from './RiderScreenStyle';
 
 import { formatISO } from '../../util/date';
 
@@ -8,7 +8,9 @@ const ListItem = ({ item }) => {
 		<tr>
 			<td style={{ width: '20%' }}>
 				<FlexWrap>
-					<p>{item.rider_id}</p>
+					<StyledLink to={`/riders/${item.rider_id}`}>
+						<p>{item.rider_id}</p>
+					</StyledLink>
 				</FlexWrap>
 			</td>
 			<td style={{ width: '30%' }}>
