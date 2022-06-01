@@ -9,7 +9,7 @@ const initialState = {
 	stats: {},
 	loading: false,
 	error: null,
-	userBlocked: false,
+	userBlocked: null,
 };
 
 // GET USERS STATISTICS
@@ -46,10 +46,7 @@ export const getAllUsers = createAsyncThunk(
 				},
 			};
 
-			const { data } = await axios.get(
-				`${url}/admin/users`,
-				config
-			);
+			const { data } = await axios.get(`${url}/admin/users`, config);
 
 			return data.data;
 		} catch (err) {
@@ -94,7 +91,7 @@ export const blockUser = createAsyncThunk(
 					Authorization: `Bearer ${authToken}`,
 				},
 			};
-			const { data } = await axios.put(
+			const { data } = await axios.patch(
 				`${url}/admin/users/${id}/block`,
 				{},
 				config
@@ -120,7 +117,7 @@ export const unblockUser = createAsyncThunk(
 					Authorization: `Bearer ${authToken}`,
 				},
 			};
-			const { data } = await axios.put(
+			const { data } = await axios.patch(
 				`${url}/admin/users/${id}/unblock`,
 				{},
 				config

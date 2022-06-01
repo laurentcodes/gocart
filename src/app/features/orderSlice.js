@@ -6,12 +6,33 @@ const url = process.env.REACT_APP_API_URL;
 const initialState = {
 	orders: [],
 	order: {},
-	orderCount: 0,
-	completedOrders: 0,
-	pendingOrders: 0,
+	stats: {},
 	loading: false,
 	error: null,
 };
+
+// GET ORDER STATISTICS
+export const getOrdersStat = createAsyncThunk(
+	'orders/stats',
+	async (token, { rejectWithValue }) => {
+		try {
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+
+			const { data } = await axios.get(
+				`${url}/admin/orders/stats/overview`,
+				config
+			);
+
+			return data.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data.message);
+		}
+	}
+);
 
 // GET ALL ORDERS
 export const getAllOrders = createAsyncThunk(
@@ -55,19 +76,29 @@ export const orderSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: {
+		// Get Stats
+		[getOrdersStat.pending]: (state, action) => {
+			state.loading = true;
+		},
+		[getOrdersStat.fulfilled]: (state, action) => {
+			state.stats = action.payload;
+			state.loading = false;
+		},
+		[getOrdersStat.rejected]: (state, action) => {
+			state.error = action.payload;
+			state.loading = false;
+
+			if (state.error.status === 401 || 406) {
+				localStorage.removeItem('gocart-token');
+			}
+		},
+
 		// Get all orders
 		[getAllOrders.pending]: (state, action) => {
 			state.loading = true;
 		},
 		[getAllOrders.fulfilled]: (state, action) => {
 			state.orders = action.payload;
-			state.orderCount = action.payload.length;
-			state.completedOrders = action.payload.filter(
-				(order) => order.status === 'COMPLETED'
-			).length;
-			state.pendingOrders = action.payload.filter(
-				(order) => order.status === 'PENDING'
-			).length;
 			state.loading = false;
 		},
 		[getAllOrders.rejected]: (state, action) => {

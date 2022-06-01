@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { getAllOrders } from '../../app/features/orderSlice';
+import { getOrdersStat } from '../../app/features/orderSlice';
 import { getRiderStat } from '../../app/features/riderSlice';
 import { getUsersStat } from '../../app/features/userSlice';
 
@@ -17,9 +17,12 @@ const HomeScreen = () => {
 	const dispatch = useDispatch();
 
 	const {
-		orderCount,
-		completedOrders,
-		pendingOrders,
+		stats: {
+			total_count: totalOrders,
+			pending_count: pendingOrders,
+			completed_count: completedOrders,
+			failed_count: failedOrders,
+		},
 		loading: orderLoading,
 	} = useSelector((state) => state.order);
 
@@ -36,7 +39,7 @@ const HomeScreen = () => {
 	const { authToken } = useSelector((state) => state.auth.userLogin);
 
 	useEffect(() => {
-		dispatch(getAllOrders(authToken));
+		dispatch(getOrdersStat(authToken));
 		dispatch(getRiderStat(authToken));
 		dispatch(getUsersStat(authToken));
 	}, [dispatch, authToken]);
@@ -80,7 +83,7 @@ const HomeScreen = () => {
 								<img src={user} alt='' />
 								<div>
 									<h3>Total Orders</h3>
-									<h1>{orderCount}</h1>
+									<h1>{totalOrders}</h1>
 								</div>
 							</Card>
 						</CardContainer>
@@ -107,6 +110,18 @@ const HomeScreen = () => {
 								<div>
 									<h3>Completed Orders</h3>
 									<h1>{completedOrders}</h1>
+								</div>
+							</Card>
+
+							<Card
+								onClick={() => {
+									navigate('orders');
+								}}
+							>
+								<img src={user} alt='' />
+								<div>
+									<h3>Failed Orders</h3>
+									<h1>{failedOrders}</h1>
 								</div>
 							</Card>
 						</CardContainer>

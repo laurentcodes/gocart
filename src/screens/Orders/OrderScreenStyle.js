@@ -2,6 +2,15 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import colors from '../../constants/colors';
 
+export const StatContainer = styled.div`
+	width: 100%;
+	padding: 10px;
+	display: flex;
+	gap: 10px;
+	justify-content: space-between;
+	margin-bottom: 10px;
+`;
+
 export const StyledAllOrders = styled.div`
 	font-size: 14px;
 	color: ${colors.body};

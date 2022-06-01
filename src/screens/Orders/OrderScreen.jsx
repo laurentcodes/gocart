@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 
 import {
+	StatContainer,
 	OrderTable,
 	StyledAllOrders,
 	EmptyOrders,
@@ -15,7 +16,7 @@ import Loader from '../../components/Loader';
 
 import ListItem from './ListItem';
 
-import { getAllOrders } from '../../app/features/orderSlice';
+import { getAllOrders, getOrdersStat } from '../../app/features/orderSlice';
 
 const OrderScreen = () => {
 	// States for setting pagination
@@ -24,7 +25,18 @@ const OrderScreen = () => {
 
 	const dispatch = useDispatch();
 
-	const { orders, loading } = useSelector((state) => state.order);
+	const {
+		orders,
+		loading,
+		stats: {
+			total_count,
+			pending_count,
+			completed_count,
+			failed_count,
+			ordered_today,
+			ordered_month,
+		},
+	} = useSelector((state) => state.order);
 
 	const { authToken } = useSelector((state) => state.auth.userLogin);
 
@@ -46,6 +58,7 @@ const OrderScreen = () => {
 	const noOfPages = Math.ceil(orders.length / ordersPerPage);
 
 	useEffect(() => {
+		dispatch(getOrdersStat(authToken));
 		dispatch(getAllOrders(authToken));
 	}, [dispatch, authToken]);
 
@@ -63,6 +76,14 @@ const OrderScreen = () => {
 					<EmptyOrders>No Orders yet!</EmptyOrders>
 				) : (
 					<>
+						<StatContainer>
+							<h3>Total Orders: {total_count}</h3>
+							<h3>Pending Orders: {pending_count}</h3>
+							<h3>Completed Orders: {completed_count}</h3>
+							<h3>Failed Orders: {failed_count}</h3>
+							<h3>Orders Today: {ordered_month}</h3>
+							<h3>Orders This Month: {ordered_month}</h3>
+						</StatContainer>
 						<TableContainer>
 							<OrderTable>
 								<thead>

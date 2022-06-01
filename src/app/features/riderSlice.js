@@ -9,7 +9,7 @@ const initialState = {
 	stats: {},
 	loading: false,
 	error: null,
-	riderBlocked: false,
+	riderBlocked: null,
 };
 
 // GET RIDERS STATISTICS
@@ -89,7 +89,7 @@ export const blockRider = createAsyncThunk(
 					Authorization: `Bearer ${authToken}`,
 				},
 			};
-			const { data } = await axios.put(
+			const { data } = await axios.patch(
 				`${url}/admin/riders/${id}/block`,
 				{},
 				config
@@ -114,7 +114,7 @@ export const unblockRider = createAsyncThunk(
 					Authorization: `Bearer ${authToken}`,
 				},
 			};
-			const { data } = await axios.put(
+			const { data } = await axios.patch(
 				`${url}/admin/riders/${id}/unblock`,
 				{},
 				config
