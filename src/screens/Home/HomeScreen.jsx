@@ -11,6 +11,10 @@ import { Container, Card, CardContainer } from './HomeScreenStyle.js';
 import Loader from '../../components/Loader';
 
 import user from '../../assets/icons/group.svg';
+import deliverySuccess from '../../assets/icons/delivery_success.svg';
+import deliveryFailed from '../../assets/icons/delivery_failed.svg';
+import totalCount from '../../assets/icons/total_count.svg';
+import progress from '../../assets/icons/progress.svg';
 
 const HomeScreen = () => {
 	const navigate = useNavigate();
@@ -80,7 +84,7 @@ const HomeScreen = () => {
 									navigate('orders');
 								}}
 							>
-								<img src={user} alt='' />
+								<img src={totalCount} alt='' />
 								<div>
 									<h3>Total Orders</h3>
 									<h1>{totalOrders}</h1>
@@ -94,7 +98,7 @@ const HomeScreen = () => {
 									navigate('orders');
 								}}
 							>
-								<img src={user} alt='' />
+								<img src={progress} alt='' />
 								<div>
 									<h3>In Progress</h3>
 									<h1>{pendingOrders}</h1>
@@ -106,7 +110,7 @@ const HomeScreen = () => {
 									navigate('orders');
 								}}
 							>
-								<img src={user} alt='' />
+								<img src={deliverySuccess} alt='' />
 								<div>
 									<h3>Completed Orders</h3>
 									<h1>{completedOrders}</h1>
@@ -118,7 +122,7 @@ const HomeScreen = () => {
 									navigate('orders');
 								}}
 							>
-								<img src={user} alt='' />
+								<img src={deliveryFailed} alt='' />
 								<div>
 									<h3>Failed Orders</h3>
 									<h1>{failedOrders}</h1>
