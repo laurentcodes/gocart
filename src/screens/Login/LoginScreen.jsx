@@ -47,6 +47,7 @@ const LoginScreen = () => {
 							placeholder='Username'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
+							required
 						/>
 
 						<label htmlFor='password'>Password</label>
@@ -55,6 +56,7 @@ const LoginScreen = () => {
 							placeholder='Password'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
+							required
 						/>
 
 						<button
