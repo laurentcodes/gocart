@@ -13,6 +13,7 @@ const initialState = {
 		userName: (authTokenFromStorage && authTokenFromStorage.username) || null,
 	},
 	loading: false,
+
 	error: null,
 };
 

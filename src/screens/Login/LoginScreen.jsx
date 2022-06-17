@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../../app/features/authSlice';
 
+import Alert from '../../components/Alert/Alert';
 import Loader from '../../components/Loader';
 
 import { Container, Form } from './LoginScreenStyle';
@@ -19,6 +20,7 @@ const LoginScreen = () => {
 	const {
 		loading,
 		userLogin: { authToken },
+		error,
 	} = useSelector((state) => state.auth);
 
 	const redirectPath = location.state?.path || '/';
@@ -33,6 +35,8 @@ const LoginScreen = () => {
 				<Loader />
 			) : (
 				<Container>
+					{error && <Alert text={error} type={'error'} />}
+
 					<img src={logo} alt='' />
 
 					<h2>Sign In</h2>
